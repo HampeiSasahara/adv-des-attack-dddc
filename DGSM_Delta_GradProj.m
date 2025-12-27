@@ -3,7 +3,11 @@
 flag_des=false;
 
 [K_Del,~,S_Del,L_Del,Lam1_Del,Lam2_Del]=ctrl_design_LQR(D,n,m,Q,R,gamma);
-gradD=gradD_func_LQR_anal(K_Del,S_Del,L_Del,Lam1_Del,Lam2_Del,D,Q,R,gamma,n,m,T,rho,A,B,anal_mats);
+%gradD=gradD_func_LQR_anal(K_Del,S_Del,L_Del,Lam1_Del,Lam2_Del,D,Q,R,gamma,n,m,T,rho,A,B,anal_mats);
+%gradD_adj=gradD_func_LQR_adjoint(K_Del,S_Del,L_Del,Lam1_Del,Lam2_Del,D,Q,R,gamma,n,m,T,rho,A,B,anal_mats);
+gradD_adj=gradD_func_LQR_adjoint_smoothing(K_Del,S_Del,L_Del,Lam1_Del,Lam2_Del,D,Q,R,gamma,n,m,T,rho,A,B,anal_mats,1e2);
+gradD_np=gradD_adj.detach().numpy();
+gradD=reshape(double(gradD_np),[nb,T]);
 Delta=step_size*gradD;
 Z_nor=D_norms(1); X_nor=D_norms(2); U_nor=D_norms(3);
 Del_Z=E_Z*Delta; Del_X=E_X*Delta; Del_U=E_U*Delta;

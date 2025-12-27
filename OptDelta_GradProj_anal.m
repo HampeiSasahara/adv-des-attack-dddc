@@ -8,8 +8,7 @@ i_nan_end=10;
 rho_pre=rho(K_dd);
 eps_rho=0*1e-3;
 step_size_init=step_size;
-eps_Delta=max(D_norms)*pert_size;
-cond_nums=zeros(1,Ite_num);
+eps_Delta=max(D_norms)*pert_size*1e-2;
 
 for i_ite=1:Ite_num
     i_ite
@@ -47,10 +46,10 @@ for i_ite=1:Ite_num
     end
 
     % gradient step
-    %[gradD,cond_nums(i_ite)]=gradD_func_LQR_anal(K_Del,S_Del,L_Del,Lam1_Del,Lam2_Del,D_Del,Q,R,gamma,n,m,T,rho,A,B,anal_mats);
-    gradD_adj=gradD_func_LQR_adjoint_smoothing(K_Del,S_Del,L_Del,Lam1_Del,Lam2_Del,D_Del,Q,R,gamma,n,m,T,rho,A,B,anal_mats,i_ite*1e2);
-    gradD_np=gradD_adj.detach().numpy();
-    gradD=reshape(double(gradD_np),[nb,T]);
+    gradD=gradD_func_LQR_anal(K_Del,S_Del,L_Del,Lam1_Del,Lam2_Del,D_Del,Q,R,gamma,n,m,T,rho,A,B,anal_mats);
+    %gradD_adj=gradD_func_LQR_adjoint(K_Del,S_Del,L_Del,Lam1_Del,Lam2_Del,D_Del,Q,R,gamma,n,m,T,rho,A,B,anal_mats);
+    %gradD_np=gradD_adj.detach().numpy();
+    %gradD=reshape(double(gradD_np),[nb,T]);
 
     if ~all(isfinite(gradD))
         scaling_tmp=1;
@@ -59,7 +58,7 @@ for i_ite=1:Ite_num
             scaling_tmp=scaling_tmp/2;
             D_Del_tmp=D_Del+scaling_tmp*Delta;
             [K_Del,~,S_Del,L_Del,Lam1_Del,Lam2_Del]=ctrl_design_LQR(D_Del,n,m,Q,R,gamma);
-            gradD_adj=gradD_func_LQR_adjoint_smoothing(K_Del,S_Del,L_Del,Lam1_Del,Lam2_Del,D_Del,Q,R,gamma,n,m,T,rho,A,B,anal_mats,i_ite*1e2);
+            gradD_adj=gradD_func_LQR_adjoint(K_Del,S_Del,L_Del,Lam1_Del,Lam2_Del,D_Del,Q,R,gamma,n,m,T,rho,A,B,anal_mats);
             gradD_np=gradD_adj.detach().numpy();
             gradD=reshape(double(gradD_np),[nb,T]);
             if all(isfinite(gradD))
