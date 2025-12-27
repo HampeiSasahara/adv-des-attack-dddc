@@ -1,4 +1,4 @@
-function [gradD,dGdvar,dGdD,LinSol] = gradD_func_LQR_anal(K,S,L,Lam1,Lam2,D,Q,R,gamma,n,m,T,rho,A,B,anal_mats)
+function [gradD,condn,dGdvar,dGdD,LinSol] = gradD_func_LQR_anal(K,S,L,Lam1,Lam2,D,Q,R,gamma,n,m,T,rho,A,B,anal_mats)
 
 V=sqrtm(R);
 E_Z=anal_mats.E_Z;
@@ -113,6 +113,7 @@ dGdvar=[dG1dL dG1dS dG1dLam;
     dG5dL dG5dS dG5dLam;
     dG6dL dG6dS dG6dLam];
 dGdD=[dG1dD; dG2dD; dG3dD; dG4dD; dG5dD; dG6dD];
+condn=cond(dGdvar);
 LinSol=linsolve(dGdvar,-dGdD);
 dLdD=LinSol(1:n*T,:);
 dSdD=LinSol(n*T+1:n*T+m^2,:);
