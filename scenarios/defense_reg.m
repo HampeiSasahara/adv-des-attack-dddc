@@ -82,7 +82,7 @@ ylabel('RCP','FontSize',p.fs,'interpreter','latex');
 xlabel('$\gamma$','FontSize',p.fs+6,'interpreter','latex');
 set(gca,'Fontsize',p.label_size); grid on;
 if p.save
-    p.pl_save.save_png('defense_reg');
+    p.pl_save.save_png2('defense_reg');
 end
 %close;
 

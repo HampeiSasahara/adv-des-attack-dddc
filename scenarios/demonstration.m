@@ -128,7 +128,9 @@ if p.save
 end
 close;
 
-
+cond_nums=cond_nums(cond_nums~=0);
+mean_demo=mean(cond_nums);
+std_demo=std(cond_nums);
 
 %open_sys=ss(A,eye(n),eye(n),0,Ts);
 %cl_sys=ss(A+B*K_dd,eye(n),eye(n),0,Ts);

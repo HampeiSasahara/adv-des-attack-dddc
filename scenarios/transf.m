@@ -27,8 +27,9 @@ for i_eps=1:eps_length
         % data generation & step size
         data_gen;
         D_ori=D;
+        [K_dd,P_dd,S_dd,L_dd,Lam1_dd,Lam2_dd]=ctrl_design_LQR(D,n,m,Q,R,gamma);
 
-        % I-DGSM without knoeledge of data
+        % I-DGSM without knowledge of data
         data_gen;
         step_size=max(D_norms)*pert_size;
         OptDelta_GradProj;
